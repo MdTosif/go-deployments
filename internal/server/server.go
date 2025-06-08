@@ -1,6 +1,7 @@
 package server
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"strings"
@@ -9,18 +10,13 @@ import (
 	"github.com/mdtosif/go-deployments/internal/runner"
 )
 
-// change these (or load from env)
-const (
-    validUser = "alice"
-    validPass = "secret123"
-)
-
 
 func basicAuth(next http.Handler) http.Handler {
     return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
         // Method 1: via Authorization header
         user, pass, ok := r.BasicAuth()
-        if !ok || user != validUser || pass != validPass {
+        print(user, pass, ok)  
+        if !ok || user != config.Cfg.Auth.Username  || pass != config.Cfg.Auth.Password {
             w.Header().Set("WWW-Authenticate", `Basic realm="Restricted"`)
             http.Error(w, "Unauthorized", http.StatusUnauthorized)
             return
@@ -55,9 +51,8 @@ func deployHandler(w http.ResponseWriter, r *http.Request) {
 
     runner := runner.New()
 
-    cfg := config.Load()
 
-    for _, v := range cfg.Services {
+    for _, v := range config.Cfg.Services {
         if service == v.Name {
             runner.Run(v.Cmd)
         }
@@ -70,13 +65,13 @@ func deployHandler(w http.ResponseWriter, r *http.Request) {
 
 func Start() {
     mux := http.NewServeMux()
-    mux.HandleFunc("/", helloHandler)
+    mux.HandleFunc("/deploy/", deployHandler) // "/deploy/:service"
 
     // wrap your mux (or individual handlers) with basicAuth
     protected := basicAuth(mux)
 
     srv := &http.Server{
-        Addr:    ":8080",
+        Addr:    fmt.Sprintf(":%d", config.Cfg.Port),
         Handler: protected,
     }
 
