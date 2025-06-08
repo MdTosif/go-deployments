@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/mdtosif/go-deployments/internal/config"
-	"github.com/mdtosif/go-deployments/internal/runner"
+	"github.com/MdTosif/go-deployments/internal/config"
+	"github.com/MdTosif/go-deployments/internal/runner"
 )
 
 

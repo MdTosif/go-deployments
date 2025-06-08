@@ -1,4 +1,4 @@
-module github.com/mdtosif/go-deployments
+module github.com/MdTosif/go-deployments
 
 go 1.24.2
 
