@@ -1,0 +1,7 @@
+services:
+  - name: touch-new-file
+    cmd: "touch new_file.txt"
+  - name: touch-new-file-2
+    cmd: "touch new_file_2.txt"
+  - name: touch-new-file-3
+    cmd: "touch new_file_3.txt"
