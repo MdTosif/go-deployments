@@ -43,6 +43,9 @@ auth:
   username: alice         # HTTP Basic Auth username
   password: secret123     # HTTP Basic Auth password
 
+slack:
+  webhook-url: https://hooks.slack.com/services/...
+
 # Server port
 port: 8081
 ```
@@ -57,6 +60,10 @@ port: 8081
 
   * `username` (string): Basic Auth username.
   * `password` (string): Basic Auth password.
+    
+* **slack**:
+  * `webhook-url` (string): Webhook url to send alert message in slack channel if any error in any command
+
 * **port** (int): TCP port to listen on.
 
 ## Usage
@@ -90,6 +97,11 @@ Usage of go-deployments:
 ```
 
 You can invoke `-h`, `-help`, or `--help` to see this usage.
+
+## Slack Alert example with webhook
+![image](https://github.com/user-attachments/assets/acc2335b-6a41-4df4-a3e5-69f9e7193996)
+
+
 
 ## Security Note
 
