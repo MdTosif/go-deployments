@@ -1,3 +1,4 @@
+port: 8082
 services:
   - name: touch-new-file
     cmd: "touch new_file.txt"
@@ -10,4 +11,6 @@ auth:
   username: alice
   password: secret123
 
-port: 8082
+slack:
+  webhook-url: https://hooks.slack.com/services/...
+

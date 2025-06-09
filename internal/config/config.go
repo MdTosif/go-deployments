@@ -24,11 +24,14 @@ type Config struct {
 	Services []Service `yaml:"services"`
 	Auth     Auth      `yaml:"auth"`
 	Port     int       `yaml:"port"`
+	Slack    struct {
+		WebhookURL string `yaml:"webhook-url"`
+	}
 }
 
 func Load() *Config {
 
-	cfgPath := flag.String("config", "internal/config/config.yaml", "Path to config file")
+	cfgPath := flag.String("config", "config.yaml", "Path to config file")
 
 	flag.Parse()
 

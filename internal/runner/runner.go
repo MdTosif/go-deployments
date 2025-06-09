@@ -1,6 +1,7 @@
 package runner
 
 import (
+	"fmt"
 	"io"
 	"log"
 	"os"
@@ -9,6 +10,7 @@ import (
 
 	"slices"
 
+	"github.com/MdTosif/go-deployments/internal/alert"
 	"github.com/google/uuid"
 )
 
@@ -81,7 +83,17 @@ func (r *Runner) Run(command string) (io.ReadCloser, io.ReadCloser, error) {
 
 	// Wait in a goroutine so it doesn’t block
 	go func() {
-		cmd.Wait()
+		// read std err and convert it to string
+		stderr, err := io.ReadAll(stderrPipe)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		err = cmd.Wait()
+		if err != nil {
+			alert.Alert(fmt.Sprintf("*%v* exited with error: _%v_ ```%v```", command, err, string(stderr)))
+		}
 		log.Println("cmd exited after waiting")
 		currentJob.SetExited()
 		// remove it from cmdRunning
